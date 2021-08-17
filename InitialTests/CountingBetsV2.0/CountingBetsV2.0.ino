@@ -1,4 +1,4 @@
-float factor = 0.75;    // coeficiente para filtro pasa bajos
+#define factor 0.85
 float maximo = 0.0;   // para almacenar valor maximo 
 int minimoEntreLatidos = 300; // 300 mseg. de tiempo minimo entre latidos
 float valorAnterior = 500;  // para almacenar valor previo
@@ -31,7 +31,8 @@ void loop() {
 
   int BPM = 0;
   if((digitalRead(2)==1)||(digitalRead(4)==1)){
-    Serial.println('!');
+    Serial.println("Conecte los electrodos porfavor");
+    delay(500);
     }
   else{
     
@@ -44,7 +45,7 @@ void loop() {
   else {        // condicion falsa del condicional
   }
   
-  maximo = maximo * 0.97;   // carga maximo como el 97 por ciento de su propio
+  maximo = maximo * 0.8;   // carga maximo como el 97 por ciento de su propio
           // valor para dejar decaer y no perder pulsos
 
   if (millis() >= tiempoLPM + 5000) {    // si transcurrieron al menos 5 segundos
