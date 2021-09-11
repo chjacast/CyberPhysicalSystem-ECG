@@ -73,7 +73,7 @@ void loop() {
     reconnect();
     }
   client.loop();
-  
+  Serial.print("Enviando Numero\n");
   //Realizamos el envio de datos cada n milisegundos
   long now = millis();
   if(now-lastMsg > 50){ //50 ms (tiempo de muestreo = n)
@@ -82,13 +82,14 @@ void loop() {
     char numrandom[8]; //Encargada de enviar valores
     
     dtostrf(numaleatorio,1,2,numrandom);
-    Serial.print("Numero: "); 
+    //Serial.print("Numero: "); 
     Serial.println(numrandom);
     client.publish("esp32/valor",numrandom);
+    //Serial.print("Numero enviado!\n");
   }
 
 
   
-  Serial.print("Hola mundo\n");
+  
   delay(1000);
 }

@@ -21,8 +21,8 @@ int value=0;
 
 
 //USUARIO PARA CONECTARNOS AL SERVIDOR******************
-const char* ssid= "SSID"; //Nombre del WiFi
-const char* password= "PASSWORD"; //Contraseña del WiFi
+const char* ssid= "TVORO_CASTILLO"; //Nombre del WiFi
+const char* password= "0701088775"; //Contraseña del WiFi
 
 //DIRECCION IP del MQTT Broker
 const char* mqtt_server = "192.168.1.27";
@@ -30,7 +30,7 @@ const char* mqtt_server = "192.168.1.27";
 
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println("Iniciando mediciones");  // texto a mostrar
   setup_wifi();
   client.setServer(mqtt_server,1883); //Permitir la conexion con el broker
@@ -125,13 +125,13 @@ void loop() {
 
   //Realizamos el envio de datos cada n milisegundos
   long now = millis();
-  if(now-lastMsg > 50){ //10 ms (tiempo de muestreo = n)
+  if(now-lastMsg >50){ //50 ms (tiempo de muestreo = n)
     lastMsg=now;
     //SEÑALES QUE SE DESEA ENVIAR AL BROKER
     char BeatString[8]; //Encargada de enviar valores RPM
-    char ECGString[8]; //Encargada de enviar la señal del electrocardiograma
+    //char ECGString[8]; //Encargada de enviar la señal del electrocardiograma
     
-static unsigned long tiempoLPM = millis();  // tiempo Latidos Por Minuto con
+  static unsigned long tiempoLPM = millis();  // tiempo Latidos Por Minuto con
             // valor actual devuelto por millis()
   static unsigned long entreLatidos = millis(); // tiempo entre Latidos con
             // valor actual devuelto por millis()
@@ -145,36 +145,33 @@ static unsigned long tiempoLPM = millis();  // tiempo Latidos Por Minuto con
 
   int BPM = 0;
   if((digitalRead(2)==1)||(digitalRead(4)==1)){
-    Serial.println("Conecte los electrodos porfavor");
+    //Serial.println("Conecte los electrodos porfavor");
     client.publish("esp32/electrodos","desconectado"); //TOPICO esp32/ECG
     delay(500);
     }
   else{
-    valorEnviar=valorAnterior*(1);
-    dtostrf(valorEnviar,1,2,ECGString);
-    client.publish("esp32/ECG",ECGString); //TOPICO esp32/Estado electrodos
-    client.publish("esp32/electrodos","conectado"); //TOPICO esp32/Estado electrodos
+   //valorEnviar=valorAnterior*(1);
+   //dtostrf(valorEnviar,1,2,ECGString);
+    //client.publish("esp32/ECG",ECGString); //TOPICO esp32/Estado electrodos
           if ((cambio >= maximo) && (millis() > entreLatidos + minimoEntreLatidos)) {  // si cambio es
           // es mayor o igual a maximo y pasaron al menos 300 mseg.
-    maximo = cambio;      // actualiza maximo con valor de cambo
-    entreLatidos = millis();    // actualiza variable entreLatidos con millis()
-    latidos++;        // incrementa latidos en uno
-  }
-  else {        // condicion falsa del condicional
-  }
-  
-  maximo = maximo * 0.9;   // carga maximo como el 97 por ciento de su propio
+          maximo = cambio;      // actualiza maximo con valor de cambo
+          entreLatidos = millis();    // actualiza variable entreLatidos con millis()
+          latidos++;        // incrementa latidos en uno
+          client.publish("esp32/electrodos","conectado"); //TOPICO esp32/Estado electrodos
+              }
+    maximo = maximo * 1;   // carga maximo como el 97 por ciento de su propio
           // valor para dejar decaer y no perder pulsos
 
-  if (millis() >= tiempoLPM + 5000) {    // si transcurrieron al menos 5 segundos
-    Serial.print("Latidos por minuto: "); // muestra texto
-    Serial.println(latidos*12);    // muestra variable latidos multiplicado por 12
-    dtostrf(latidos*6,1,2,BeatString);
-    client.publish("esp32/beats",BeatString); //TOPICO esp32/latidos
-    latidos = 0;        // coloca contador de latidos en cero
-    tiempoLPM = millis();     // actualiza variable con valor de millis()
-      }
-      delay(5);
+    if (millis() >= tiempoLPM + 5000) {    // si transcurrieron al menos 5 segundos
+      //Serial.print("Latidos por minuto: "); // muestra texto
+      Serial.println(latidos*12);    // muestra variable latidos multiplicado por 12
+      dtostrf(latidos*12,1,2,BeatString);
+      client.publish("esp32/beats",BeatString); //TOPICO esp32/latidos
+      latidos = 0;        // coloca contador de latidos en cero
+      tiempoLPM = millis();     // actualiza variable con valor de millis()
+        }
+      //delay(5);
     }
   }
 }
