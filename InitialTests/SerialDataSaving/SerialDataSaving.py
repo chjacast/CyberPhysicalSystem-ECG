@@ -1,12 +1,13 @@
 import serial
 from datetime import datetime
 
-sensor = "DH11"
-serial_port = '/dev/ttyACM0'
-baud_rate = 9600
-path = "%s_LOG_%s.txt" % (str(datetime.now()), sensor)
+sensor = "Led"
+serial_port = 'COM5'
+baud_rate = 115200
+path = "{0}_LOG_{1}.txt".format(str(datetime.now()).split(" ")[0], sensor)
 ser = serial.Serial(serial_port, baud_rate)
-with open(path, 'w+') as f:
+with open(path, 'w') as f:
     while True:
         line = ser.readline()
-        f.writelines([line.strip(), " t = %s \n " % (datetime.now())])
+        print(line)
+        f.writelines([str(line), " t = %s \n " % (datetime.now())])
