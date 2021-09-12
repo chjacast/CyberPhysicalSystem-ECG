@@ -11,14 +11,15 @@ void setup() {
 
 void loop() {
   if((digitalRead(2)==1)||(digitalRead(2)==1)){
-    Serial.println('!');
+    Serial.println("Conecte electrodos Porfavor");
+    delay(1000);
     }
   else{
-    Serial.print(analogRead(15)); //Lectura ECG
+    Serial.println(analogRead(15)); //Lectura ECG
     }
   
   delay(1);
-  Serial.print(','); //Lectura ECG
-  Serial.println(4000); //Lectura ECG
+  //Serial.print(','); //Lectura ECG
+  //Serial.println(4000); //Lectura ECG
 
 }
