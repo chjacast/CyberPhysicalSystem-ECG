@@ -1,13 +1,20 @@
 import serial
 from datetime import datetime
 
-sensor = "Led"
-serial_port = 'COM5'
-baud_rate = 115200
+sensor = "ECG"
+serial_port = 'COM5' #Se configura el puerto por donde se encontrara el micro
+baud_rate = 9600 #Se configura el baud rate depediendo de como este configurado el micro
 path = "{0}_LOG_{1}.txt".format(str(datetime.now()).split(" ")[0], sensor)
 ser = serial.Serial(serial_port, baud_rate)
-with open(path, 'w') as f:
-    while True:
+
+#Tiempo actual
+Time_init=float(str(datetime.now()).split(" ")[1].split(":")[2])
+Time_act=0
+print(Time_act)
+with open(path, 'w+') as f:
+    while (Time_act - Time_init) < 1: #Se va a recoger los datos durante n segundos
         line = ser.readline()
         print(line)
-        f.writelines([str(line), " t = %s \n " % (datetime.now())])
+        Time_act=float(str(datetime.now()).split(" ")[1].split(":")[2])
+        f.writelines([str(datetime.now())+" ", str(line)[2:-5]+'\n'])
+f.close()
