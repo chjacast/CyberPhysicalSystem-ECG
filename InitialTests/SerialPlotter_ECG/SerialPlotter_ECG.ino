@@ -1,8 +1,8 @@
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  Serial.print("setup");
-  Serial.println("ECG, 4000");
+  //Serial.print("setup");
+  //Serial.println("ECG, 4000");
 
 
   pinMode(2, INPUT); //Se configura detección de LO-
@@ -18,7 +18,7 @@ void loop() {
     Serial.println(analogRead(15)); //Lectura ECG
     }
   
-  delay(1);
+  delay(10);
   //Serial.print(','); //Lectura ECG
   //Serial.println(4000); //Lectura ECG
 

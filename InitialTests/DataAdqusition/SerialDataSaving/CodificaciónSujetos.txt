@@ -1,0 +1,12 @@
+Codificación: S#A#M#F
+
+S = Sujeto
+
+A = Acción 
+1= sentado
+2= levantado
+3= acostado
+
+M=número de muestra
+
+F= Fecha
